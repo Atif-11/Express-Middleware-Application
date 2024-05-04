@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An E-Commerce-Website</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <script defer src="/scripts/script.js"></script>
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <section class="home">
+        <style>
+    .home {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        background: url(/images/bg-img.jpg);
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+        </style>
+        
+        <div class="home-text">
+            <h1>New Styles <br>Elevate Your <br> Look</h1>
+            <p>Discover the latest trends and must-haves for your wardrobe. Upgrade your style today!</p>            
+            <a href="#" class="btn">
+                Shop Now
+                <i class="ri-arrow-right-fill"></i>
+            </a>
+        </div>
+    </section>
+
+    <div class="brands">
+        <div class="main-brands">
+            <div class="brands-c"><img src="images/Versace.png"></div>
+            <div class="brands-c"><img src="images/Gucci.png"></div>
+            <div class="brands-c"><img src="images/Zara.png"></div>
+            <div class="brands-c"><img src="images/Prada.png"></div>
+            <div class="brands-c"><img src="images/Calvin.png"></div>
+        </div>
+    </div>
+
+    <section class="n-product">
+        <div class="center-text"><h2>Available Products</h2></div>
+        <div class="n-content">
+            <% products.forEach(function(product) { %>
+                <div class="row">
+                    <div class="row-img"><img src="<%= product.imageUrl %>"></div>
+                    <h3><%= product.name %> <%= product.description%></h3>
+                    <div class="stars">
+                        <% 
+                        const rating = product.rating; 
+                        const fullStars = Math.floor(rating); 
+                        const halfStar = (rating - fullStars) >= 0.5; 
+                    
+                        for (let i = 0; i < fullStars; i++) { %>
+                            <a href="#"><i class="ri-star-fill"></i></a>
+                        <% } %>
+                    
+                        <% if (halfStar) { %>
+                            <a href="#"><i class="ri-star-half-line"></i></a>
+                        <% } %>
+                    
+                        <% const emptyStars = 5 - Math.ceil(rating); // Get the number of empty stars %>
+                        <% for (let i = 0; i < emptyStars; i++) { %>
+                            <a href="#"><i class="ri-star-line"></i></a>
+                        <% } %>
+                    
+                        <a href="#"><%= rating %>/5</a> <!-- Display the rating value -->
+                    </div>
+                    
+                    <div class="row-in">
+                        <div class="row-left">
+                            <a href="#">Add to Cart <i class="ri-shopping-cart-2-line"></i></a>
+                        </div>
+                        <div class="row-right"><h6>Rs. <%= product.price %></h6></div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+
+    <section class="feature">
+        <div class="feature-content">
+            <div class="box">
+                <div class="f-icon"><i class="ri-visa-fill"></i></div>
+                <div class="f-text">
+                    <h3>Visa Payments</h3>
+                    <p>Securely shop with Visa on our website. Enjoy hassle-free transactions and peace of mind with Visa's trusted payment system.</p>
+                </div>
+            </div>
+            <div class="box">
+                <div class="f-icon"><i class="ri-customer-service-2-fill"></i></div>
+                <div class="f-text">
+                    <h3>Get in Touch with our Support.</h3>
+                    <p>Have a question or need assistance? Our support team is here to help. Contact us via email or phone for prompt and friendly assistance.</p>
+                </div>
+            </div>
+            <div class="box">
+                <div class="f-icon"><i class="ri-truck-fill"></i></div>
+                <div class="f-text">
+                    <h3>Fast & Free Shipping</h3>
+                    <p>Enjoy fast and free shipping on all orders. Get your favorite items delivered to your doorstep with speed and convenience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>
