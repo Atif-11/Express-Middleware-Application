@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Form Validation</title>
+    <link rel="stylesheet" href="/css/contact-us.css">
+    <script defer src="/scripts/contact-us-validation.js"></script>
+</head>
+<body>
+    <h1>Welcome to the best form on Internet!</h1>
+        <!--newsletter section-->
+        <section class="newsletter">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <h2>Get Latest Sales News!</h2>
+                    <p>Sign up with your email address</p>
+                </div>
+    
+                <form action="" name="myForm" onsubmit="return validateForm()">
+                    <div class="formDesign" id="name">
+                        Name: <input type="text" name="fname" placeholder="Enter your name" required><b><span class="formError"></span></b>
+                    </div>
+                    <div class="formDesign" id="email">
+                        E-mail: <input type="email" name="femail" placeholder="Enter your email address" required><b><span class="formError"></span></b>
+                    </div>
+                    <div class="formDesign" id="gender">
+                        Gender:
+                        <select name="fgender">
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <b><span class="formError"></span></b>
+                    </div>                    
+                    <div class="formDesign" id="comment">
+                        Comment: <input type="text" name="fcomment" placeholder="Tell us something!" required><b><span class="formError"></span></b>
+                    </div>
+                    <input class="but" type="submit" value="Submit">
+                </form>
+            </div>
+        </section>
+</body>
+</html>

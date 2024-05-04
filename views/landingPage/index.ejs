@@ -33,7 +33,7 @@
         <div class="home-text">
             <h1>New Styles <br>Elevate Your <br> Look</h1>
             <p>Discover the latest trends and must-haves for your wardrobe. Upgrade your style today!</p>            
-            <a href="#" class="btn">
+            <a href="#shop" class="btn">
                 Shop Now
                 <i class="ri-arrow-right-fill"></i>
             </a>
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <section class="n-product">
+    <section class="n-product" id="shop">
         <div class="center-text"><h2>Available Products</h2></div>
         <div class="n-content">
             <% products.forEach(function(product) { %>
@@ -88,8 +88,9 @@
                 </div>
             <% }); %>
         </div>
+        <div id="features"></div>
     </section>
-
+    
     <section class="feature">
         <div class="feature-content">
             <div class="box">

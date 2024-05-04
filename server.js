@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Product = require("./models/Products");  
+const Admin = require("./models/AdminAuthentication");
 const Review = require("./models/Reviews");    
 
 let server = express();
@@ -11,9 +12,14 @@ server.use(express.static("public"));
 // var expressLayouts = require("express-ejs-layouts");
 // server.use(expressLayouts);
 
-// server.get("/", (req, res) => {
-//   res.render("landingPage/addProduct");
+// Assuming you have a route handler for rendering the login page
+// server.get('/', (req, res) => {
+//   res.render('AdminLogin/loginPage', { message: '' }); // Pass an empty message initially
 // });
+
+let adminApiRouter = require("./routes/api/adminAuthentication");
+server.use("/", adminApiRouter);
+server.use("/", require("./routes/site/adminAuthentication"));
 
 let productApiRouter = require("./routes/api/products");
 server.use("/", productApiRouter);
@@ -39,6 +45,16 @@ server.get("/", async (req, res) => {
     res.status(500).send("Error occurred while fetching products");
   }
 });
+
+server.get('/login', (req, res) => {
+  res.render('user_login'); // Render the HTML page for user login
+});
+
+
+server.get('/contact-us', (req, res) => {
+  res.render('ContactUs/contact-us'); // Render the contact us form created in assignment 2
+});
+
 // Server listening
 server.listen(4000, () => {
   console.log("Server started at http://localhost:4000");

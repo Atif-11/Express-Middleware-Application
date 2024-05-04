@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <title><%= pageTitle %></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-align: center;
+            position: relative;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Align children vertically */
+            align-items: center; /* Center children horizontally */
+        }
+        h1 {
+            margin-top: 20px;
+        }
+        .welcome-message {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .add-new-button {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .add-new-button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        img {
+            padding-top: 10px;
+            max-width: 100%; /* Ensure images don't exceed container width */
+            height: auto;
+            margin: 0 auto; /* Center images horizontally */
+            display: block;
+        }
+        .action-buttons {
+            margin-top: 0px; /* Adjust the margin as needed */
+            text-align: center; /* Center the buttons horizontally */
+        }
+
+        .action-buttons a {
+            display: inline-block; /* Make buttons inline */
+            text-decoration: none;
+            color: #007bff;
+            margin-right: 10px;
+            margin-bottom: 10px; /* Add margin between buttons */
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid #007bff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .action-buttons a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .pagination {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+        .pagination a {
+            text-decoration: none;
+            color: #007bff;
+            margin: 0 5px;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid #007bff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .pagination a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .logout-button i {
+            color: #007bff;
+            font-size: 18px;
+        }
+
+        .logout-button:hover i {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <a href="/login" class="logout-button">Click the icon to logout: <i class="ri-logout-box-r-line"></i></a>
+    <div class="container">
+        <h1><%= pageTitle %></h1>
+        <p class="welcome-message">Welcome to the Admin Panel!</p>
+        <a href="/admin/login/products/new" class="add-new-button">Add New Item</a>
+        <ul>
+            <% products.forEach(product => { %>
+                <li>
+                    <strong><%= product.name %></strong> - <%= product.description %> - $<%= product.price %><br>
+                    <img src="<%= product.imageUrl %>"><br>
+                    <div class="action-buttons">
+                        <a href="/admin/login/products/<%= product._id %>/edit">Edit</a> 
+                        <a href="/admin/login/products/<%= product._id %>/delete">Delete</a>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+    <div class="pagination">
+        <% if (page > 1) { %>
+            <a href="/admin/login/products/<%= page - 1 %>">Previous</a>
+        <% } %>
+        <% if (page < totalPages) { %>
+            <a href="/admin/login/products/<%= page + 1 %>">Next</a>
+        <% } %>
+    </div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+:root{
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --p-font: #1rem
+}
+.newsletter-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: 2rem;
+    background: var(--text-color);
+    padding: 60px 70px;
+    border-radius: 28px;
+}
+
+.newsletter-text h2 {
+    color: var(--bg-color);
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.newsletter-text p {
+    font-size: var(--p-font);
+    font-weight: 500;
+    color: var(--bg-color);
+}
+
+.newsletter-content form {
+    display: grid;
+    gap: 1rem;
+}
+
+.formDesign {
+    font-size: var(--p-font);
+    color: var(--bg-color);
+    display: grid;
+    gap: 0.05rem;
+}
+
+.formDesign select {
+    padding: 0.5rem;
+    font-size: var(--p-font);
+}
+
+.formDesign select,
+.formDesign input {
+    width: 100%;
+}
+
+.but {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.formError{
+    color: red;
+    font-weight: bold;
+}

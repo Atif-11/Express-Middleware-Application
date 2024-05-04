@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../../models/Products");
 
-router.get("/api/products", async (req, res) => {
+router.get("/api/admin/login/products", async (req, res) => {
   try {
     const products = await Product.find();
     return res.send(products);
@@ -12,7 +12,7 @@ router.get("/api/products", async (req, res) => {
   }
 });
 
-router.get("/api/products/:id", async (req, res) => {
+router.get("/api/admin/login/products:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -25,7 +25,7 @@ router.get("/api/products/:id", async (req, res) => {
   }
 });
 
-router.post("/api/products", async (req, res) => {
+router.post("/api/admin/login/products/new", async (req, res) => {
   try {
     const product = new Product(req.body);
     await product.save();
@@ -36,7 +36,7 @@ router.post("/api/products", async (req, res) => {
   }
 });
 
-router.put("/api/products/:id", async (req, res) => {
+router.put("/api/admin/login/products:id", async (req, res) => {
   try {
     let product = await Product.findById(req.params.id);
     if (!product) {
@@ -54,7 +54,7 @@ router.put("/api/products/:id", async (req, res) => {
   }
 });
 
-router.delete("/api/products/:id", async (req, res) => {
+router.delete("/api/admin/login/products:id", async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {

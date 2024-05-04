@@ -2,45 +2,45 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../../models/Products");
 
-router.get("/products/new", async (req, res) => {
-  res.render("products/addProduct");
+router.get("/admin/login/products/new", async (req, res) => {
+  res.render("AdminLogin/products/addProduct");
 });
 
-router.post("/products/new", async (req, res) => {
+router.post("/admin/login/products/new", async (req, res) => {
   try {
     const product = new Product(req.body);
     await product.save();
-    return res.redirect("/products");
+    return res.redirect("/admin/login/products");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error adding product");
   }
 });
 
-router.get("/products/:id/delete", async (req, res) => {
+router.get("/admin/login/products/:id/delete", async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
-    return res.redirect("/products");
+    return res.redirect("/admin/login/products");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error deleting product");
   }
 });
 
-router.get("/products/:id/edit", async (req, res) => {
+router.get("/admin/login/products/:id/edit", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).send("Product not found");
     }
-    return res.render("products/editProduct", { product });
+    return res.render("AdminLogin/products/editProduct", { product });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error fetching product for editing");
   }
 });
 
-router.post("/products/:id/edit", async (req, res) => {
+router.post("/admin/login/products/:id/edit", async (req, res) => {
   try {
     let product = await Product.findById(req.params.id);
     if (!product) {
@@ -51,14 +51,14 @@ router.post("/products/:id/edit", async (req, res) => {
     product.price = req.body.price;
     product.imageUrl = req.body.imageUrl;
     await product.save();
-    return res.redirect("/products");
+    return res.redirect("/admin/login/products");
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error editing product");
   }
 });
 
-router.get("/products/:page?", async (req, res) => {
+router.get("/admin/login/products/:page?", async (req, res) => {
   try {
     let page = Number(req.params.page) ? Number(req.params.page) : 1;
     let pageSize = 3;
@@ -67,7 +67,7 @@ router.get("/products/:page?", async (req, res) => {
       .limit(pageSize);
     let totalProducts = await Product.countDocuments();
     let totalPages = Math.ceil(totalProducts / pageSize);
-    return res.render("products/listProducts", {
+    return res.render("AdminLogin/products/listProducts", {
       pageTitle: "Available Products",
       products,
       totalProducts,
