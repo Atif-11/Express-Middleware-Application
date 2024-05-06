@@ -16,13 +16,7 @@ server.use(express.static("public"));
 // server.get('/', (req, res) => {
 //   res.render('AdminLogin/loginPage', { message: '' }); // Pass an empty message initially
 // });
-
-let adminApiRouter = require("./routes/api/adminAuthentication");
-server.use("/", adminApiRouter);
 server.use("/", require("./routes/site/adminAuthentication"));
-
-let productApiRouter = require("./routes/api/products");
-server.use("/", productApiRouter);
 server.use("/", require("./routes/site/products"));
 
 // Connect to MongoDB
@@ -53,6 +47,10 @@ server.get('/login', (req, res) => {
 
 server.get('/contact-us', (req, res) => {
   res.render('ContactUs/contact-us'); // Render the contact us form created in assignment 2
+});
+
+server.get('/reviews', (req, res) => {
+  res.render('Reviews/review'); // Render the reviews form created in Lab Task 2
 });
 
 // Server listening

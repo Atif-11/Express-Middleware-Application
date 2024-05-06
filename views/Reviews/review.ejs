@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Review</title>
+    <link rel="stylesheet" href="css/reviews.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">Landa.pk</a>
+    </header>
+
+    <section class="add-review">
+        <h2>Add Review</h2>
+        <form id="reviewForm">
+            <div class="form-group">
+                <label for="productName">Product Name:</label>
+                <select id="productName" class="form-control" required>
+                    <option value="Orange-Tee">Orange-Tee</option>
+                    <option value="Black Jeans">Black Jeans</option>
+                    <option value="Blue denim">Blue denim</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="customerName">Your Name:</label>
+                <input type="text" id="customerName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="reviewContent">Review:</label>
+                <textarea id="reviewContent" class="form-control" rows="5" required></textarea>
+            </div>
+            <button id="createBtn" type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </section>
+
+    <section class="reviews">
+        <h2>Product Reviews</h2>
+        <div id="reviewsList"></div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/scripts/reviews.js"></script>
+</body>
+</html>
