@@ -18,6 +18,8 @@ server.use(express.static("public"));
 // });
 server.use("/", require("./routes/site/adminAuthentication"));
 server.use("/", require("./routes/site/products"));
+server.use("/", require("./routes/site/customerLogin"));
+
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/", { 

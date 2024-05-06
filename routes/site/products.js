@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Product = require("../../models/Products");
 
-router.get("/admin/login/products/new", async (req, res) => {
+router.get("/admin/login/products/new", (req, res) => {
   res.render("AdminLogin/products/addProduct");
 });
 
