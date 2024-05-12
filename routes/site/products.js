@@ -30,6 +30,17 @@ router.post("/add-to-cart/:id", async (req, res) => {
   }
 });
 
+router.delete("/cart/remove/:id", async (req, res) => {
+  try {
+      const productId = req.params.id;
+      req.session.cart = req.session.cart.filter(item => item !== productId);
+      return res.status(200).json({ message: 'Product removed from cart' });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 
 router.get("/admin/login/products/:id/delete", async (req, res) => {

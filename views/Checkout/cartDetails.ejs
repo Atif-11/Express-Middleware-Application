@@ -99,18 +99,13 @@
                             <strong><%= item.name %></strong><br>
                             Price: Rs. <%= item.price %>
                         </div>
-                        <div class="quantity">
-                            <div class="quantity-button" data-action="decrease" data-id="<%= item._id %>"><i class="ri-subtract-line"></i></div>
-                            <div><%= item.quantity %></div>
-                            <div class="quantity-button" data-action="increase" data-id="<%= item._id %>"><i class="ri-add-line"></i></div>
-                        </div>
-                        <div class="remove-button" data-id="<%= item._id %>"><i class="ri-delete-bin-line"></i></div>
+                        <div class="remove-button" data-id="<%= item._id %>"><a><i class="ri-delete-bin-line"></i></a></div>
                     </div>
                     <img src="<%= item.imageUrl %>"><br>
                 </li>
             <% }); %>              
         </ul>
-        <div class="total">
+        <div id="totalAmount" class="total">
             Total: Rs. <%= totalAmount %>
         </div>
         <a href="/checkout/proceed" class="proceed-button">Proceed to Payout</a>
@@ -119,36 +114,46 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const quantityButtons = document.querySelectorAll('.quantity-button');
     const removeButtons = document.querySelectorAll('.remove-button');
-
-    quantityButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const productId = this.getAttribute('data-id');
-            const action = this.getAttribute('data-action');
-            const quantityElement = this.parentElement.querySelector('div:nth-child(2)');
-            let quantity = parseInt(quantityElement.innerText);
-
-            if (action === 'increase') {
-                quantity++;
-            } else if (action === 'decrease' && quantity > 1) {
-                quantity--;
-            }
-            // Ensure quantity is always at least 1
-            quantity = Math.max(quantity, 1);
-            quantityElement.innerText = quantity;
-
-        });
-    });
+    let totalAmount = 0; // Initialize total amount
 
     removeButtons.forEach(button => {
         button.addEventListener('click', function () {
             const productId = this.getAttribute('data-id');
             // Remove product from the UI
             this.parentElement.parentElement.remove();
+            // Remove product from the cart list in the session
+            fetch(`/cart/remove/${productId}`, { method: 'DELETE' })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to remove product from cart');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Product removed from cart:', data);
+                    // Recalculate total amount
+                    updateTotalAmount();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle error
+                });
         });
     });
+
+    function updateTotalAmount() {
+        // Calculate total amount based on remaining items
+        totalAmount = 0; // Reset total amount
+        document.querySelectorAll('.product-info').forEach(productInfo => {
+            const priceElement = productInfo.querySelector('.price');
+            const price = parseFloat(priceElement.innerText.replace('Rs. ', ''));
+            totalAmount += price; // Update total amount
+        });
+        document.getElementById('totalAmount').innerText = totalAmount.toFixed(2); // Display total amount
+    }
 });
+
 
 </script>    
 </body>
