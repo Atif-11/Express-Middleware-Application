@@ -71,17 +71,17 @@
                             <a href="#"><i class="ri-star-half-line"></i></a>
                         <% } %>
                     
-                        <% const emptyStars = 5 - Math.ceil(rating); // Get the number of empty stars %>
+                        <% const emptyStars = 5 - Math.ceil(rating); %>
                         <% for (let i = 0; i < emptyStars; i++) { %>
                             <a href="#"><i class="ri-star-line"></i></a>
                         <% } %>
                     
-                        <a href="#"><%= rating %>/5</a> <!-- Display the rating value -->
+                        <a href="#"><%= rating %>/5</a> 
                     </div>
                     
                     <div class="row-in">
                         <div class="row-left">
-                            <a href="#">Add to Cart <i class="ri-shopping-cart-2-line"></i></a>
+                            <a href="/add-to-cart/<%= product._id %>" class="add-to-cart" data-id="<%= product._id %>">Add to Cart <i class="ri-shopping-cart-2-line"></i></a>
                         </div>
                         <div class="row-right"><h6>Rs. <%= product.price %></h6></div>
                     </div>

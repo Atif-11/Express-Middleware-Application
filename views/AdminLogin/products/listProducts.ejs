@@ -130,7 +130,7 @@
         <ul>
             <% products.forEach(product => { %>
                 <li>
-                    <strong><%= product.name %></strong> - <%= product.description %> - $<%= product.price %><br>
+                    <strong><%= product.name %></strong> - <%= product.description %> - Rs. <%= product.price %><br>
                     <img src="<%= product.imageUrl %>"><br>
                     <div class="action-buttons">
                         <a href="/admin/login/products/<%= product._id %>/edit">Edit</a> 

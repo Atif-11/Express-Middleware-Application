@@ -1,10 +1,20 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Product = require("./models/Products");  
+const Product = require("./models/Products"); 
+const cookieParser = require('cookie-parser'); 
+const session = require("express-session");
 const Admin = require("./models/AdminAuthentication");
 const Review = require("./models/Reviews");    
 
 let server = express();
+server.use(cookieParser());
+server.use(session({
+  secret: 'condem_9th_may',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 300000 }
+}));
+
 server.use(express.json());
 server.use(express.urlencoded());
 server.set("view engine", "ejs");
@@ -19,6 +29,7 @@ server.use(express.static("public"));
 server.use("/", require("./routes/site/adminAuthentication"));
 server.use("/", require("./routes/site/products"));
 server.use("/", require("./routes/site/customerLogin"));
+server.use("/", require("./routes/site/cartDetails"));
 
 
 // Connect to MongoDB
@@ -33,6 +44,16 @@ mongoose.connect("mongodb://localhost:27017/", {
 
 // Home route
 server.get("/", async (req, res) => {
+  try {
+    const products = await Product.find({});  // Fetch all products
+    res.render("landingPage/index", { products: products });
+  } catch (error) {
+    console.error("Failed to fetch products", error);
+    res.status(500).send("Error occurred while fetching products");
+  }
+});
+
+server.get("/add-to-cart", async (req, res) => {
   try {
     const products = await Product.find({});  // Fetch all products
     res.render("landingPage/index", { products: products });

@@ -17,6 +17,21 @@ router.post("/admin/login/products/new", async (req, res) => {
   }
 });
 
+router.post("/add-to-cart/:id", async (req, res) => {
+  try {
+    const productId = req.params.id;
+    req.session.cart = req.session.cart || [];
+    req.session.cart.push(productId);
+    res.cookie('cart', req.session.cart, { maxAge: 300000, httpOnly: true });
+    return res.redirect("/products");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error adding product to cart");
+  }
+});
+
+
+
 router.get("/admin/login/products/:id/delete", async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
