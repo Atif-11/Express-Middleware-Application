@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const AdminAuthentication = require('../../models/AdminAuthentication');
+const bcrypt = require('bcryptjs');
 
 // Site route for admin login page
 router.get('/admin/login', (req, res) => {
@@ -15,14 +16,49 @@ router.post('/admin/login', async (req, res) => {
     try {
         const admin = await AdminAuthentication.findOne({ username });
 
-        if (!admin || admin.password !== password) {
+        if (!admin) {
             return res.render('AdminLogin/loginPage', { message: 'Invalid username or password.' });
         }
 
+        const isPasswordValid = bcrypt.compareSync(password, admin.password);
+
+        if (!isPasswordValid) {
+            return res.render('AdminLogin/loginPage', { message: 'Invalid username or password.' });
+        }
         // Authentication successful, redirect to admin dashboard
+        req.session.isAdminAuthenticated = true;
         return res.redirect('/admin/login/products');
     } catch (error) {
         console.error('Error authenticating admin:', error);
+        return res.status(500).send('Internal Server Error');
+    }
+});
+
+
+// Site route for admin registration page
+router.get('/admin/register', (req, res) => {
+    res.render('AdminLogin/adminRegistration', { message: '' });
+});
+
+// Site route to handle admin registration form submission
+router.post('/admin/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const existingAdmin = await AdminAuthentication.findOne({ username });
+
+        if (existingAdmin) {
+            return res.render('AdminLogin/adminRegistration', { message: 'Username already exists.' });
+        }
+
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        const newAdmin = new AdminAuthentication({ username, password: hashedPassword });
+        await newAdmin.save();
+
+        // Registration successful, redirect to admin registration with success message
+        return res.render('AdminLogin/adminRegistration', { message: 'Registration Successful.' });
+    } catch (error) {
+        console.error('Error registering admin:', error);
         return res.status(500).send('Internal Server Error');
     }
 });

@@ -3,10 +3,16 @@ const router = express.Router();
 const Product = require("../../models/Products");
 
 router.get("/admin/login/products/new", (req, res) => {
+  if (!req.session.isAdminAuthenticated) {
+    return res.redirect("/admin/login");
+  }  
   res.render("AdminLogin/products/addProduct");
 });
 
 router.post("/admin/login/products/new", async (req, res) => {
+  if (!req.session.isAdminAuthenticated) {
+    return res.redirect("/admin/login");
+  }
   try {
     const product = new Product(req.body);
     await product.save();
@@ -31,6 +37,9 @@ router.post("/add-to-cart/:id", async (req, res) => {
 });
 
 router.delete("/cart/remove/:id", async (req, res) => {
+  if (!req.session.isAdminAuthenticated) {
+    return res.redirect("/admin/login");
+  }  
   try {
       const productId = req.params.id;
       req.session.cart = req.session.cart.filter(item => item !== productId);
@@ -41,9 +50,10 @@ router.delete("/cart/remove/:id", async (req, res) => {
   }
 });
 
-
-
 router.get("/admin/login/products/:id/delete", async (req, res) => {
+  if (!req.session.isAdminAuthenticated) {
+    return res.redirect("/admin/login");
+  }
   try {
     await Product.findByIdAndDelete(req.params.id);
     return res.redirect("/admin/login/products");
@@ -54,6 +64,9 @@ router.get("/admin/login/products/:id/delete", async (req, res) => {
 });
 
 router.get("/admin/login/products/:id/edit", async (req, res) => {
+  if (!req.session.isAdminAuthenticated) {
+    return res.redirect("/admin/login");
+  }
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -67,6 +80,9 @@ router.get("/admin/login/products/:id/edit", async (req, res) => {
 });
 
 router.post("/admin/login/products/:id/edit", async (req, res) => {
+  if (!req.session.isAdminAuthenticated) {
+    return res.redirect("/admin/login");
+  }
   try {
     let product = await Product.findById(req.params.id);
     if (!product) {
@@ -85,6 +101,10 @@ router.post("/admin/login/products/:id/edit", async (req, res) => {
 });
 
 router.get("/admin/login/products/:page?", async (req, res) => {
+  if (!req.session.isAdminAuthenticated) {
+    return res.redirect("/admin/login");
+  }
+
   try {
     let page = Number(req.params.page) ? Number(req.params.page) : 1;
     let pageSize = 3;

@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Product = require("../../models/Products");
 
-const JWT_SECRET_KEY = "your_jwt_secret_key_here";
+const JWT_SECRET_KEY = "condem_9th_may";
 
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
@@ -19,22 +19,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-router.post("/add-to-cart/:id", async (req, res) => {
-  try {
-    const productId = req.params.id;
-    // Logic to add product to cart
-    let cart = req.cookies.cart || [];
-    cart.push(productId);
-    res.cookie("cart", cart, { maxAge: 3600000 }); // Set cookie with a max age of 1 hour (3600000 milliseconds)
-    return res.redirect("/products");
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send("Error adding product to cart");
-  }
-});
-
-
-router.get("/api/admin/login/products", async (req, res) => {
+router.get("/api/admin/login/products", verifyToken, async (req, res) => {
   try {
     const products = await Product.find();
     return res.send(products);
@@ -44,7 +29,7 @@ router.get("/api/admin/login/products", async (req, res) => {
   }
 });
 
-router.get("/api/admin/login/products/:id", async (req, res) => {
+router.get("/api/admin/login/products/:id", verifyToken, async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
@@ -57,7 +42,7 @@ router.get("/api/admin/login/products/:id", async (req, res) => {
   }
 });
 
-router.post("/api/admin/login/products/new", async (req, res) => {
+router.post("/api/admin/login/products/new", verifyToken, async (req, res) => {
   try {
     const product = new Product(req.body);
     await product.save();
@@ -68,7 +53,7 @@ router.post("/api/admin/login/products/new", async (req, res) => {
   }
 });
 
-router.put("/api/admin/login/products/:id", async (req, res) => {
+router.put("/api/admin/login/products/:id", verifyToken, async (req, res) => {
   try {
     let product = await Product.findById(req.params.id);
     if (!product) {
@@ -86,7 +71,7 @@ router.put("/api/admin/login/products/:id", async (req, res) => {
   }
 });
 
-router.delete("/api/admin/login/products/:id", async (req, res) => {
+router.delete("/api/admin/login/products/:id", verifyToken, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (!product) {

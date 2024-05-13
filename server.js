@@ -22,7 +22,6 @@ server.use(express.static("public"));
 // var expressLayouts = require("express-ejs-layouts");
 // server.use(expressLayouts);
 
-// Assuming you have a route handler for rendering the login page
 // server.get('/', (req, res) => {
 //   res.render('AdminLogin/loginPage', { message: '' }); // Pass an empty message initially
 // });
@@ -42,18 +41,14 @@ mongoose.connect("mongodb://localhost:27017/", {
   console.error("Could not connect to MongoDB", err);
 });
 
-// Home route
-server.get("/", async (req, res) => {
-  try {
-    const products = await Product.find({});  // Fetch all products
-    res.render("landingPage/index", { products: products });
-  } catch (error) {
-    console.error("Failed to fetch products", error);
-    res.status(500).send("Error occurred while fetching products");
-  }
+// Add middleware to set isAdminAuthenticated in req.session
+server.use((req, res, next) => {
+  req.session.isAdminAuthenticated = false; // Default to false
+  next();
 });
 
-server.get("/add-to-cart", async (req, res) => {
+// Home route
+server.get("/", async (req, res) => {
   try {
     const products = await Product.find({});  // Fetch all products
     res.render("landingPage/index", { products: products });
