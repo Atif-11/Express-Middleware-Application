@@ -1,37 +1,67 @@
-# Admin Panel Login
+# Express Middleware Application
 
-This is a simple web application for e-commerce store built using Node.js, Express.js, MongoDB, EJS, and CSS.
+This repository contains an Express.js middleware application for managing an e-commerce platform. It includes various functionalities for handling authentication, product management, customer registration, and more.
 
-## Features
+## Folder Structure
 
-- Allows administrators to login to the admin panel securely.
-- Validates administrator credentials against MongoDB.
-- Provides a simple and responsive user interface for the landing page of an e-commerce store.
+- `models/`
+  - `AdminAuthentication.js`: Model for admin authentication.
+  - `Products.js`: Model for managing products.
+  - `Reviews.js`: Model for managing reviews.
+  - `Customers.js`: Model for managing customer information.
 
-## Installation
+- `public/`
+  - `css/`
+    - `contact-us.css`: CSS file for the contact us page.
+    - `custLogin.css`: CSS file for the customer login page.
+    - `adminLoginPage.css`: CSS file for the admin login page.
+    - `reviews.css`: CSS file for styling reviews.
+    - `landingPage.css`: CSS file for styling the landing page.
+    - `adminLoginForm.css`: CSS file for styling the admin login form.
+  - `images/`: Folder for storing images used in the application.
+  - `scripts/`: Folder for storing client-side JavaScript files.
 
-1. Clone the repository to your local machine:
+- `routes/api/`
+  - `products.js`: API routes for managing products.
 
+- `routes/site/`
+  - `adminAuthentication.js`: Routes for admin authentication.
+  - `cartDetails.js`: Routes for managing cart details.
+  - `customerRegistration.js`: Routes for customer registration.
+  - `products.js`: Routes for managing products.
 
-2. Install the dependencies:
+- `views/`
+  - `AdminLogin/`
+    - `loginPage.ejs`: EJS template for the admin login page.
+    - `products/`
+      - `addProduct.ejs`: EJS template for adding a product.
+      - `listProducts.ejs`: EJS template for listing products.
+      - `editProduct.ejs`: EJS template for editing a product.
+  - `Checkout/`
+    - `cartDetails.ejs`: EJS template for displaying cart details.
+  - `ContactUs/`
+    - `contact-us.ejs`: EJS template for the contact us page.
+  - `CustomerRegistration/`
+    - `customerRegistration.ejs`: EJS template for customer registration.
+  - `landingPage/`
+    - `landingPage.ejs`: EJS template for the landing page.
+  - `partials/`
+    - `footer.ejs`: EJS partial for the footer.
+    - `header.ejs`: EJS partial for the header.
+  - `Reviews/`
+    - `review.ejs`: EJS template for displaying reviews.
+  - `adminLoginPage.ejs`: EJS template for the admin login page.
 
+- `server.js`: Main server file for the Express application.
 
-3. Set up MongoDB:
-   - Ensure that you have MongoDB installed and running on your local machine or provide the MongoDB connection URI in the `.env` file.
+## Functionality
 
-4. Start the server:
+- **Authentication**: The application provides authentication for both admin and customers.
+- **Product Management**: Admins can add, edit, and list products.
+- **Customer Registration**: Customers can register on the platform.
+- **Cart Details**: Customers can view their cart details.
+- **Reviews**: Customers can write reviews for products.
+- **Contact Us**: Users can contact the platform through the contact us page.
+- **Landing Page**: The landing page of the application.
 
-
-5. Access the application in your web browser at `http://localhost:4000`.
-
-## Usage
-
-- Navigate to `http://localhost:4000` to access the landing page.
-
-## Contributing
-
-Contributions are welcome! If you have any suggestions, enhancements, or bug fixes, please feel free to submit a pull request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+Feel free to explore the code and contribute to this project!
