@@ -2,9 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Product = require("./models/Products"); 
 const cookieParser = require('cookie-parser'); 
-const session = require("express-session");
-const Admin = require("./models/AdminAuthentication");
-const Review = require("./models/Reviews");    
+const session = require("express-session");   
+
 
 let server = express();
 server.use(cookieParser());
@@ -27,9 +26,7 @@ server.use(express.static("public"));
 // });
 server.use("/", require("./routes/site/adminAuthentication"));
 server.use("/", require("./routes/site/products"));
-server.use("/", require("./routes/site/customerLogin"));
 server.use("/", require("./routes/site/cartDetails"));
-
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/", { 
@@ -39,12 +36,6 @@ mongoose.connect("mongodb://localhost:27017/", {
   console.log("DB Connected");
 }).catch(err => {
   console.error("Could not connect to MongoDB", err);
-});
-
-// Add middleware to set isAdminAuthenticated in req.session
-server.use((req, res, next) => {
-  req.session.isAdminAuthenticated = false; // Default to false
-  next();
 });
 
 // Home route
@@ -57,11 +48,6 @@ server.get("/", async (req, res) => {
     res.status(500).send("Error occurred while fetching products");
   }
 });
-
-server.get('/login', (req, res) => {
-  res.render('user_login'); // Render the HTML page for user login
-});
-
 
 server.get('/contact-us', (req, res) => {
   res.render('ContactUs/contact-us'); // Render the contact us form created in assignment 2

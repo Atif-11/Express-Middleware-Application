@@ -122,7 +122,11 @@
     </style>
 </head>
 <body>
-    <a href="/login" class="logout-button">Click the icon to logout: <i class="ri-logout-box-r-line"></i></a>
+    <form action="/login" method="post">
+        <button type="submit" class="logout-button">
+            Click the icon to logout: <i class="ri-logout-box-r-line"></i>
+        </button>
+    </form>    
     <div class="container">
         <h1><%= pageTitle %></h1>
         <p class="welcome-message">Welcome to the Admin Panel!</p>
