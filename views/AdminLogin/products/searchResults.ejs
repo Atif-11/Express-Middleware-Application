@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-    <title><%= pageTitle %></title>
-    <style>
-      body {
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <title><%= pageTitle %></title>
+  <style>
+          body {
         font-family: Arial, sans-serif;
         background-color: #f8f9fa;
         color: #333;
@@ -122,50 +119,48 @@
       .logout-button:hover i {
         color: #0056b3;
       }
-    </style>
-  </head>
-  <body>
-    <form action="/login" method="post">
-      <button type="submit" class="logout-button">
-        Click the icon to logout: <i class="ri-logout-box-r-line"></i>
-      </button>
-    </form>
-    <div class="container">
-      <h1><%= pageTitle %></h1>
-      <p class="welcome-message">Welcome to the Admin Panel!</p>
-      <a href="/admin/login/products/new" class="add-new-button"
-        >Add New Item</a
-      >
-      <!--Here is the form for searching the products-->
-      <form
-        action="/admin/login/products/search"
-        method="get"
-        class="search-form"
-      >
-        <input type="text" name="q" placeholder="Search products..." required />
-        <button type="submit">Search</button>
-      </form>
 
-      <ul>
-        <% products.forEach(product => { %>
+  </style>
+</head>
+<body>
+  <form action="/admin/login" method="post">
+    <button type="submit" class="logout-button">
+      Click the icon to logout: <i class="ri-logout-box-r-line"></i>
+    </button>
+  </form>    
+  <div class="container">
+    <h1><%= pageTitle %></h1>
+    <form action="/admin/login/products/search" method="get" class="search-form">
+      <input type="text" name="q" placeholder="Search products..." required>
+      <button type="submit">Search</button>
+    </form>
+    <p class="welcome-message">Welcome to the Admin Panel!</p>
+    <a href="/admin/login/products/new" class="add-new-button">Add New Item</a>
+
+    <h2>Search Results for "<%= searchTerm %>"</h2>
+    <ul>
+      <% products.forEach(product => { %>
         <li>
-          <strong><%= product.name %></strong> - <%= product.description %> -
-          Rs. <%= product.price %><br />
-          <img src="<%= product.imageUrl %>" /><br />
-          <div class="action-buttons">
-            <a href="/admin/login/products/<%= product._id %>/edit">Edit</a>
-            <a href="/admin/login/products/<%= product._id %>/delete">Delete</a>
-          </div>
+          <strong><%= product.name %></strong> - <%= product.description %> - Rs. <%= product.price %><br>
+          <img src="<%= product.imageUrl %>"><br>
         </li>
-        <% }); %>
-      </ul>
-    </div>
+      <% }); %>
+    </ul>
     <div class="pagination">
       <% if (page > 1) { %>
-      <a href="/admin/login/products/<%= page - 1 %>">Previous</a>
-      <% } %> <% if (page < totalPages) { %>
-      <a href="/admin/login/products/<%= page + 1 %>">Next</a>
+        <a href="/admin/login/products/search?q=<%= searchTerm %>&page=<%= page - 1 %>">Previous</a>
+      <% } %>
+      <% if (page < totalPages) { %>
+        <a href="/admin/login/products/search?q=<%= searchTerm %>&page=<%= page + 1 %>">Next</a>
       <% } %>
     </div>
-  </body>
+
+    <h2>Search History</h2>
+    <ul>
+      <% searchedProducts.forEach(term => { %>
+        <li><%= term %></li>
+      <% }); %>
+    </ul>
+  </div>
+</body>
 </html>

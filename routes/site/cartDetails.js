@@ -36,5 +36,28 @@ router.get("/cart/details", async (req, res) => {
   }
 });
 
+router.delete("/cart/remove/:id", (req, res) => {
+  const productId = req.params.id;
+
+  // Respond with a script to delete the item from local storage
+  res.send(`
+      <script>
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const productId = '${productId}';
+
+          // Find the index of the product ID in the cart
+          const index = cart.indexOf(productId);
+          if (index > -1) {
+              cart.splice(index, 1); // Remove the product ID from the cart
+              localStorage.setItem('cart', JSON.stringify(cart)); // Update the cart in local storage
+              alert('Product removed from cart');
+          } else {
+              alert('Product not found in cart');
+          }
+          window.location.href = '/'; // Redirect to home or another page
+      </script>
+  `);
+});
+
 
 module.exports = router;

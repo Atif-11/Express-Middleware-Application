@@ -99,6 +99,54 @@ router.post("/admin/login/products/:id/edit", async (req, res) => {
   }
 });
 
+router.get("/admin/login/products/search", async (req, res) => {
+  console.log("Search route hit");
+  console.log("Query parameters:", req.query);
+
+  if (!isAdminAuthenticated) {
+    return res.redirect("/admin/login");
+  }
+
+  const searchTerm = req.query.q;
+  const page = Number(req.query.page) || 1;
+  const pageSize = 2;
+
+  if (!searchTerm) {
+    return res.status(400).send("No search term provided");
+  }
+
+  try {
+    req.session.searchedProducts = req.session.searchedProducts || [];
+    if (!req.session.searchedProducts.includes(searchTerm)) {
+      req.session.searchedProducts.push(searchTerm);
+    }
+
+    const products = await Product.find({
+      name: { $regex: searchTerm, $options: "i" }
+    })
+    .skip(pageSize * (page - 1))
+    .limit(pageSize);
+
+    const totalProducts = await Product.countDocuments({
+      name: { $regex: searchTerm, $options: "i" }
+    });
+
+    const totalPages = Math.ceil(totalProducts / pageSize);
+
+    return res.render("AdminLogin/products/searchResults", {
+      pageTitle: "Search Results",
+      searchTerm,
+      products,
+      page,
+      totalPages,
+      searchedProducts: req.session.searchedProducts
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Error searching products");
+  }
+});
+
 router.get("/admin/login/products/:page?", async (req, res) => {
   if (!isAdminAuthenticated) {
     return res.redirect("/admin/login");
@@ -124,5 +172,13 @@ router.get("/admin/login/products/:page?", async (req, res) => {
     return res.status(500).send("Error fetching products");
   }
 });
+
+// router.post("/admin/login/products", async (req, res) => {
+//   if (!isAdminAuthenticated) {
+//     return res.redirect("/admin/login");
+//   }
+//   console.log("I am here");
+//   res.redirect("/admin/login/products/search")
+// });
 
 module.exports = router;

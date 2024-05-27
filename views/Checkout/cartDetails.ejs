@@ -109,52 +109,71 @@
             Total: Rs. <%= totalAmount %>
         </div>
         <a href="/checkout/proceed" class="proceed-button">Proceed to Payout</a>
-          
     </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const removeButtons = document.querySelectorAll('.remove-button');
-    let totalAmount = 0; // Initialize total amount
-
-    removeButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const productId = this.getAttribute('data-id');
-            // Remove product from the UI
-            this.parentElement.parentElement.remove();
-            // Remove product from the cart list in the session
-            fetch(`/cart/remove/${productId}`, { method: 'DELETE' })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to remove product from cart');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const removeButtons = document.querySelectorAll('.remove-button');
+            let totalAmount = 0; // Initialize total amount
+        
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const productId = this.getAttribute('data-id');
+                    // Remove product from the UI
+                    this.parentElement.parentElement.remove();
+                    
+                    // Remove product from the cart list in cookies
+                    let cart = getCartFromCookies();
+                    const index = cart.indexOf(productId);
+                    if (index > -1) {
+                        cart.splice(index, 1); // Remove the product ID from the cart
+                        setCartInCookies(cart); // Update cookies
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Product removed from cart:', data);
+        
                     // Recalculate total amount
                     updateTotalAmount();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Handle error
                 });
+            });
+        
+            function updateTotalAmount() {
+                // Calculate total amount based on remaining items
+                totalAmount = 0; // Reset total amount
+                document.querySelectorAll('.product-info').forEach(productInfo => {
+                    const priceElement = productInfo.querySelector('.price');
+                    const price = parseFloat(priceElement.innerText.replace('Rs. ', ''));
+                    totalAmount += price; // Update total amount
+                });
+                document.getElementById('totalAmount').innerText = totalAmount.toFixed(2); // Display total amount
+            }
+        
+            function getCartFromCookies() {
+                const name = 'cart=';
+                const decodedCookie = decodeURIComponent(document.cookie);
+                console.log('Decoded Cookie:', decodedCookie); // Debugging line
+                const ca = decodedCookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i].trim();
+                    console.log('Cookie part:', c); // Debugging line
+                    if (c.indexOf(name) == 0) {
+                        return JSON.parse(c.substring(name.length, c.length));
+                    }
+                }
+                return [];
+            }
+        
+            function setCartInCookies(cart) {
+                const d = new Date();
+                d.setTime(d.getTime() + (7*24*60*60*1000)); // 7 days expiry
+                const expires = "expires=" + d.toUTCString();
+                document.cookie = "cart=" + JSON.stringify(cart) + ";" + expires + ";path=/";
+                console.log('Updated Cookie:', document.cookie); // Debugging line
+            }
+        
+            // Check cookies on load
+            console.log('Initial Cookie:', document.cookie); // Debugging line
         });
-    });
-
-    function updateTotalAmount() {
-        // Calculate total amount based on remaining items
-        totalAmount = 0; // Reset total amount
-        document.querySelectorAll('.product-info').forEach(productInfo => {
-            const priceElement = productInfo.querySelector('.price');
-            const price = parseFloat(priceElement.innerText.replace('Rs. ', ''));
-            totalAmount += price; // Update total amount
-        });
-        document.getElementById('totalAmount').innerText = totalAmount.toFixed(2); // Display total amount
-    }
-});
-
-
-</script>    
+    </script>
+        
+        
+        
 </body>
 </html>
